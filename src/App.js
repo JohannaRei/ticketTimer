@@ -1,10 +1,13 @@
 import { Provider } from 'react-redux';
 import { Navigation } from 'react-native-navigation';
-import { registerScreens } from './Screens/registerScreens';
+import { YellowBox } from 'react-native';
+import { registerScreens } from './screens/registerScreens';
 import { configureStore } from './store/configureStore';
 
+YellowBox.ignoreWarnings(['unknown call: "relay:check"']);
+
 const store = configureStore();
-registerScreens(/*store, Provider*/);
+registerScreens(store, Provider);
 
 const startApp = () => {
   const tabs = [
