@@ -1,4 +1,4 @@
-package com.tickettimer;
+package com.ticketTimer;
 
 import com.reactnativenavigation.NavigationActivity;
 

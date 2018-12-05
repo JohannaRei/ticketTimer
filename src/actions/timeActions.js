@@ -6,3 +6,7 @@ export function fetchPreviousTasksSuccess(res) {
     previousTasks: res.data
   };
 }
+
+export function fetchPreviousTasks() {
+  return function(dispatch) {};
+}
