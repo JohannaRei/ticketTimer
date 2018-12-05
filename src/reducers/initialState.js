@@ -1,10 +1,8 @@
-export default {
-  user: {
-    name: ''
-  },
-  tasks: {
-    totalTime: 0,
-    previousTasks: [],
-    currentTasks: []
-  }
+const initialState = {
+  user: '',
+  totalTime: 0,
+  previousTasks: [],
+  currentTasks: []
 };
+
+export default initialState;

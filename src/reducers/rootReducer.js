@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
-import times from './timeReducer';
+import timeReducer from './timeReducer';
 
-const rootReducer = combineReducers({ times });
+const rootReducer = combineReducers({ timeReducer });
 
 export default rootReducer;

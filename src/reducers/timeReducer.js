@@ -1,11 +1,13 @@
 import initialState from './initialState';
-import * as types from '../constants/actionTypes';
+import { FETCH_PREVIOUS_TASKS_SUCCESS } from '../constants/actionTypes';
 
-export default (state = initialState, action) => {
+const timeReducer = (state = initialState, action) => {
   switch (action.type) {
-    case types.FETCH_PREVIOUS_TASKS_SUCCESS:
-      return { ...state, tasks: action.previousTasks };
+    case FETCH_PREVIOUS_TASKS_SUCCESS:
+      return { ...state, previousTasks: action.previousTasks };
     default:
       return state;
   }
 };
+
+export default timeReducer;

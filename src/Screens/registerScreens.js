@@ -1,19 +1,19 @@
-import Navigation from 'react-native-navigation';
+import { Navigation } from 'react-native-navigation';
 
 import HomeScreen from './HomeScreen';
 import ProfileScreen from './ProfileScreen';
 
-const registerScreens = (store, Provider) => {
-  Navigation.registerComponent(
+export function registerScreens(/*store, Provider*/) {
+  Navigation.registerComponentWithRedux(
     'app.HomeScreen',
-    () => HomeScreen,
+    () => HomeScreen /*,
     store,
-    Provider
+    Provider*/
   );
-  Navigation.registerComponent(
+  Navigation.registerComponentWithRedux(
     'app.ProfileScreen',
-    () => ProfileScreen,
+    () => ProfileScreen /*,
     store,
-    Provider
+    Provider*/
   );
-};
+}
