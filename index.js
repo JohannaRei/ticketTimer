@@ -1,7 +1,14 @@
-/** @format */
-
-import { AppRegistry } from 'react-native';
+import { Navigation } from 'react-native-navigation';
 import App from './src/App';
-import { name as appName } from './app.json';
 
-AppRegistry.registerComponent(appName, () => App);
+Navigation.registerComponent(`app.home`, () => App);
+
+Navigation.events().registerAppLaunchedListener(() => {
+  Navigation.setRoot({
+    root: {
+      component: {
+        name: 'app.home'
+      }
+    }
+  });
+});
