@@ -2,6 +2,7 @@ import { Navigation } from 'react-native-navigation';
 
 import HomeScreen from './HomeScreen';
 import ProfileScreen from './ProfileScreen';
+import NewTaskModal from '../common/components/NewTaskModal';
 
 export function registerScreens(store, Provider) {
   Navigation.registerComponentWithRedux(
@@ -16,4 +17,5 @@ export function registerScreens(store, Provider) {
     Provider,
     store
   );
+  Navigation.registerComponent('app.NewTaskModal', () => NewTaskModal);
 }

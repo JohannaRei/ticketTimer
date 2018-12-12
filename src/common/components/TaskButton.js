@@ -3,7 +3,7 @@ import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 
 const TaskButton = ({ task, onPress }) => (
   <TouchableOpacity
-    style={[styles.button, { backgroundColor: task.color }]}
+    style={[styles.button, { backgroundColor: task.colour }]}
     onPress={() => onPress(task.id)}
   >
     <Text style={styles.title}>{task.name}</Text>
