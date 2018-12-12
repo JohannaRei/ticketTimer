@@ -15,10 +15,25 @@ const colours = [
   '#de76a5'
 ];
 
-const randomColour = () => {
-  const colour = colours[Math.floor(Math.random() * colours.length)];
-  console.log(colour);
-  return colour;
+const randomizeColours = array => {
+  let currentIndex = array.length;
+  let temp;
+  let randomIndex;
+
+  while (0 !== currentIndex) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    temp = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temp;
+  }
+
+  return array;
 };
 
-export default randomColour;
+const randomColours = () => {
+  return randomizeColours(colours);
+};
+
+export default randomColours;

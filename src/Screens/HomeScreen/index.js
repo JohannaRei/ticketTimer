@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
-import { View, Button } from 'react-native';
+import { View, Button, Alert } from 'react-native';
 import styles from './styles';
 import { connect } from 'react-redux';
 import { TaskButton } from '../../common/components';
-import randomColour from '../../constants/colors';
+import randomColours from '../../constants/colors';
 import { Navigation } from 'react-native-navigation';
 
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentTasks: []
+      currentTasks: [],
+      colours: randomColours()
     };
   }
 
@@ -31,13 +32,20 @@ class HomeScreen extends Component {
     let time = 0;
     setInterval(() => {
       time += 1;
-      console.log(time);
     }, 1000);
   };
 
   onTaskButtonPress = id => {
     console.log(id);
     this.startTaskTimer(id);
+  };
+
+  showButtonOptions = () => {
+    console.log('PITKÄ PAINALLUS');
+    Alert.alert('Task options', 'Do you want to edit or delete this task?', [
+      { text: 'Edit', onPress: () => console.log('edit') },
+      { text: 'Delete', onPress: () => console.log('delete') }
+    ]);
   };
 
   openNewTaskModal = () => {
@@ -49,13 +57,6 @@ class HomeScreen extends Component {
               name: 'app.NewTaskModal',
               passProps: {
                 onSubmit: this.addNewTask
-              },
-              options: {
-                topBar: {
-                  title: {
-                    text: 'Add new task'
-                  }
-                }
               }
             }
           }
@@ -65,7 +66,7 @@ class HomeScreen extends Component {
   };
 
   addNewTask = task => {
-    const { currentTasks } = this.state;
+    const { currentTasks, colours } = this.state;
     if (currentTasks.length === 8) return;
 
     const taskNumber =
@@ -76,11 +77,12 @@ class HomeScreen extends Component {
       ...currentTasks,
       {
         id: taskNumber,
-        name: task.name || `Task ${taskNumber}`,
+        name: task.name,
         timeToday: 0,
         timeTotal: 0,
         times: [],
-        colour: randomColour()
+        colour: colours[taskNumber],
+        deadline: task.deadline
       }
     ];
     this.setState({ currentTasks: newTasks });
@@ -89,7 +91,6 @@ class HomeScreen extends Component {
   renderButtonRows = rows => {
     const buttonRows = [];
     for (let i = 0; i < rows * 2; i += 2) {
-      console.log(i);
       buttonRows.push(this.renderButtonRow([i, i + 1]));
     }
     return buttonRows;
@@ -98,7 +99,7 @@ class HomeScreen extends Component {
   renderButtonRow = tasks => {
     const { currentTasks } = this.state;
     return (
-      <View style={{ flexDirection: 'row', flex: 1 }}>
+      <View key={tasks.toString()} style={{ flexDirection: 'row', flex: 1 }}>
         {tasks.map(
           task =>
             currentTasks[task] && (
@@ -138,11 +139,12 @@ class HomeScreen extends Component {
 
   render() {
     const { currentTasks } = this.state;
-    console.log(currentTasks);
     return (
       <View style={styles.container}>
         {this.renderButtons()}
-        <Button title="Add new" onPress={this.openNewTaskModal} />
+        {this.state.currentTasks.length < 6 && (
+          <Button title="Add new" onPress={this.openNewTaskModal} />
+        )}
       </View>
     );
   }
