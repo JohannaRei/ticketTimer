@@ -1,0 +1,16 @@
+{
+  "home": {
+    "title": "Koti",
+    "add_new": "Lisää uusi",
+    "task": {
+      "edit": "Muokkaa",
+      "delete": "Poista",
+      "time_today": "Aikaa käytetty tänään:",
+      "time_total": "Aikaa käytetty yhteensä:",
+      "deadline": "Deadline:"
+    }
+  },
+  "profile": {
+    "title": "Profiili"
+  }
+}

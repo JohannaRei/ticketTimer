@@ -1,5 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet, Button, View } from 'react-native';
+import i18n from '../../locales';
 
 class TaskButton extends React.Component {
   constructor(props) {
@@ -8,6 +9,19 @@ class TaskButton extends React.Component {
       showEditButtons: false
     };
   }
+
+  formatTime = sec => {
+    const h = [
+      Math.floor(sec / 3600),
+      Math.floor((sec % 3600) / 60),
+      Math.floor((sec % 3600) % 60)
+    ];
+    const times = h.map(time => {
+      return time < 10 ? `0${time}` : time;
+    });
+
+    return `${times[0]}:${times[1]}:${times[2]}`;
+  };
 
   render() {
     const { task, onPress } = this.props;
@@ -19,14 +33,21 @@ class TaskButton extends React.Component {
         onLongPress={() => this.setState({ showEditButtons: !showEditButtons })}
       >
         <Text style={styles.title}>{task.name}</Text>
-        <Text>{`Time used today: ${task.timeToday}`}</Text>
-        <Text>{`Time used in total: ${task.timeTotal}`}</Text>
-        {task.deadline && <Text>{`Deadline: ${task.deadline}`}</Text>}
+        <Text>{i18n.t('home.task.time_today')}</Text>
+        <Text>{this.formatTime(task.timeToday)}</Text>
+        <Text>{i18n.t('home.task.time_total')}</Text>
+        <Text>{this.formatTime(task.timeTotal)}</Text>
+        {task.deadline && (
+          <Text>{`${i18n.t('home.task.deadline')} ${task.deadline}`}</Text>
+        )}
         {showEditButtons && (
           <View style={styles.editButtons}>
-            <Button title="Edit" onPress={() => console.log('edit')} />
             <Button
-              title="Delete"
+              title={Int8Array.t('home.task.edit')}
+              onPress={() => console.log('edit')}
+            />
+            <Button
+              title={i18n.t('home.task.delete')}
               color="red"
               onPress={() => console.log('delete')}
             />

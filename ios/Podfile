@@ -6,6 +6,9 @@ target 'ticketTimer' do
   # use_frameworks!
 
   # Pods for ticketTimer
+  pod 'React', :path => '../node_modules/react-native'
+  pod 'yoga', path: '../node_modules/react-native/ReactCommon/yoga'
   pod 'Firebase/Core'
+  pod 'RNLanguages', :path => '../node_modules/react-native-languages'
 
 end

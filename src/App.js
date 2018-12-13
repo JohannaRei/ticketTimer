@@ -1,64 +1,22 @@
-import { Provider } from 'react-redux';
-import { Navigation } from 'react-native-navigation';
-import { YellowBox } from 'react-native';
-import { registerScreens } from './screens/registerScreens';
-import { configureStore } from './store/configureStore';
+import React, { Component } from 'react';
+import RNLanguages from 'react-native-languages';
+import i18n from './locales';
+import Root from './Root';
 
-YellowBox.ignoreWarnings(['unknown call: "relay:check"']);
+export default class App extends Component {
+  componentWillMount() {
+    RNLanguages.addEventListener('change', this._onLanguageChage);
+  }
 
-const store = configureStore();
-registerScreens(store, Provider);
+  componentWillUnmount() {
+    RNLanguages.removeEventListener('change', this._onLanguageChage);
+  }
 
-const startApp = () => {
-  const tabs = [
-    {
-      stack: {
-        id: 'HOME_SCREEN',
-        children: [
-          {
-            component: {
-              name: 'app.HomeScreen'
-            }
-          }
-        ],
-        options: {
-          bottomTab: {
-            text: 'Home',
-            testID: 'HOME_TAB',
-            icon: require('./images/tab1.png')
-          }
-        }
-      }
-    },
-    {
-      stack: {
-        children: [
-          {
-            component: {
-              name: 'app.ProfileScreen'
-            }
-          }
-        ],
-        options: {
-          bottomTab: {
-            text: 'Profile',
-            testID: 'PROFILE_TAB',
-            icon: require('./images/tab2.png')
-          }
-        }
-      }
-    }
-  ];
-  return Navigation.setRoot({
-    root: {
-      bottomTabs: {
-        id: 'ROOT',
-        children: tabs
-      }
-    }
-  });
-};
+  _onLanguageChage = ({ language }) => {
+    i18n.locale = language;
+  };
 
-const App = Navigation.events().registerAppLaunchedListener(() => startApp());
-
-export default App;
+  render() {
+    return <Root />;
+  }
+}

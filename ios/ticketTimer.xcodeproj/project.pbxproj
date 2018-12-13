@@ -1354,6 +1354,7 @@
 			baseConfigurationReference = 7D4B694DA05514EDB2B600E1 /* Pods-ticketTimer.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = NZV3BAWHB7;
@@ -1379,6 +1380,7 @@
 			baseConfigurationReference = 72F21615E76E944B25166B4D /* Pods-ticketTimer.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = NZV3BAWHB7;
 				HEADER_SEARCH_PATHS = (

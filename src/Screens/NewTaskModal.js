@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import { Navigation } from 'react-native-navigation';
-import appStyles from '../appStyles';
-import Input from './Input';
+import appStyles from '../common/appStyles';
+import Input from '../common/components/Input';
 
 class NewTaskModal extends React.Component {
   constructor(props) {

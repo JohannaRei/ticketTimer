@@ -1,0 +1,16 @@
+{
+  "home": {
+    "title": "Home",
+    "add_new": "Add new task",
+    "task": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "time_today": "Time used today:",
+      "time_total": "Time used in total:",
+      "deadline": "Deadline:"
+    }
+  },
+  "profile": {
+    "title": "Profile"
+  }
+}

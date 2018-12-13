@@ -5,21 +5,25 @@ import { connect } from 'react-redux';
 import { TaskButton } from '../../common/components';
 import randomColours from '../../constants/colors';
 import { Navigation } from 'react-native-navigation';
+import i18n from '../../locales';
+import uuid from 'react-native-uuid';
 
 class HomeScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentTasks: [],
+      tasks: [],
+      currentTask: null,
       colours: randomColours()
     };
+    this.timer;
   }
 
   static options(passProps) {
     return {
       topBar: {
         title: {
-          text: 'Home'
+          text: i18n.t('home.title')
         },
         drawBehind: false,
         visible: true,
@@ -28,24 +32,53 @@ class HomeScreen extends Component {
     };
   }
 
-  startTaskTimer = id => {
-    let time = 0;
-    setInterval(() => {
-      time += 1;
-    }, 1000);
+  checkDateEquality = (date1, date2) => {
+    const sameYear = date1.getYear() === date2.getYear();
+    const sameMonth = date1.getMonth() === date2.getMonth();
+    const sameDay = date1.getDay() === date2.getDay();
+    return sameYear && sameMonth && sameDay;
+  };
+
+  removeTask = id => {
+    const tasks = this.state.tasks.filter(task => task.id !== id);
+    this.setState({ tasks });
   };
 
   onTaskButtonPress = id => {
-    console.log(id);
-    this.startTaskTimer(id);
+    const { tasks, currentTask } = this.state;
+
+    if (!currentTask || currentTask.id !== id) {
+      const selected = tasks.find(task => task.id === id);
+      this.setState({ currentTask: selected });
+      const dayChanged = this.checkDateEquality(
+        // needs to be moved to app startup
+        selected.lastLogged,
+        new Date()
+      );
+
+      this.timer = setInterval(() => {
+        this.setState(state => {
+          const tasks = state.tasks.map(task => {
+            return task.id === id
+              ? {
+                  ...task,
+                  timeToday: task.timeToday + 1,
+                  timeTotal: task.timeToday + 1,
+                  lastLogged: dayChanged ? new Date() : task.lastLogged
+                }
+              : task;
+          });
+          return { tasks };
+        });
+      }, 1000);
+    } else {
+      clearInterval(this.timer);
+      this.setState({ currentTask: null });
+    }
   };
 
   showButtonOptions = () => {
-    console.log('PITKÄ PAINALLUS');
-    Alert.alert('Task options', 'Do you want to edit or delete this task?', [
-      { text: 'Edit', onPress: () => console.log('edit') },
-      { text: 'Delete', onPress: () => console.log('delete') }
-    ]);
+    console.log('button options');
   };
 
   openNewTaskModal = () => {
@@ -66,26 +99,22 @@ class HomeScreen extends Component {
   };
 
   addNewTask = task => {
-    const { currentTasks, colours } = this.state;
-    if (currentTasks.length === 8) return;
+    const { tasks, colours } = this.state;
+    if (tasks.length === 8) return;
 
-    const taskNumber =
-      currentTasks.length > 0
-        ? currentTasks[currentTasks.length - 1].id + 1
-        : 1;
     const newTasks = [
-      ...currentTasks,
+      ...tasks,
       {
-        id: taskNumber,
+        id: uuid.v4(),
         name: task.name,
         timeToday: 0,
         timeTotal: 0,
-        times: [],
-        colour: colours[taskNumber],
-        deadline: task.deadline
+        colour: colours[tasks.length],
+        deadline: task.deadline,
+        lastLogged: new Date('2018-11-11')
       }
     ];
-    this.setState({ currentTasks: newTasks });
+    this.setState({ tasks: newTasks });
   };
 
   renderButtonRows = rows => {
@@ -96,18 +125,18 @@ class HomeScreen extends Component {
     return buttonRows;
   };
 
-  renderButtonRow = tasks => {
-    const { currentTasks } = this.state;
+  renderButtonRow = taskArr => {
+    const { tasks } = this.state;
     return (
-      <View key={tasks.toString()} style={{ flexDirection: 'row', flex: 1 }}>
-        {tasks.map(
+      <View key={taskArr.toString()} style={{ flexDirection: 'row', flex: 1 }}>
+        {taskArr.map(
           task =>
-            currentTasks[task] && (
+            tasks[task] && (
               <TaskButton
-                key={currentTasks[task].id}
-                task={currentTasks[task]}
+                key={tasks[task].id}
+                task={tasks[task]}
                 onPress={this.onTaskButtonPress}
-                buttonColor={currentTasks[task].color}
+                buttonColor={tasks[task].color}
               />
             )
         )}
@@ -116,11 +145,11 @@ class HomeScreen extends Component {
   };
 
   renderButtons = () => {
-    const { currentTasks } = this.state;
-    const taskLength = currentTasks.length;
+    const { tasks } = this.state;
+    const taskLength = tasks.length;
     switch (true) {
       case taskLength <= 3:
-        return currentTasks.map(task => (
+        return tasks.map(task => (
           <TaskButton
             key={task.id}
             task={task}
@@ -138,11 +167,12 @@ class HomeScreen extends Component {
   };
 
   render() {
-    const { currentTasks } = this.state;
+    const { tasks } = this.state;
+
     return (
       <View style={styles.container}>
         {this.renderButtons()}
-        {this.state.currentTasks.length < 6 && (
+        {tasks.length < 6 && (
           <Button title="Add new" onPress={this.openNewTaskModal} />
         )}
       </View>
@@ -152,7 +182,7 @@ class HomeScreen extends Component {
 
 const mapStateToProps = state => ({
   user: state.user,
-  currentTasks: state.currentTasks
+  tasks: state.tasks
 });
 
 const mapDispatchToProps = dispatch => ({});
