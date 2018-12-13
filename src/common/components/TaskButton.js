@@ -43,13 +43,13 @@ class TaskButton extends React.Component {
         {showEditButtons && (
           <View style={styles.editButtons}>
             <Button
-              title={Int8Array.t('home.task.edit')}
+              title={i18n.t('home.task.edit')}
               onPress={() => console.log('edit')}
             />
             <Button
               title={i18n.t('home.task.delete')}
               color="red"
-              onPress={() => console.log('delete')}
+              onPress={() => this.props.onDelete(task.id)}
             />
           </View>
         )}

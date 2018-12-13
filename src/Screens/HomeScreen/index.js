@@ -40,8 +40,20 @@ class HomeScreen extends Component {
   };
 
   removeTask = id => {
-    const tasks = this.state.tasks.filter(task => task.id !== id);
-    this.setState({ tasks });
+    Alert.alert('Delete task', 'Are you sure?', [
+      {
+        text: 'Cancel',
+        onPress: () => {}
+      },
+      {
+        text: 'Delete',
+        onPress: () =>
+          this.setState({
+            tasks: this.state.tasks.filter(task => task.id !== id)
+          }),
+        style: 'destructive'
+      }
+    ]);
   };
 
   onTaskButtonPress = id => {
@@ -137,6 +149,7 @@ class HomeScreen extends Component {
                 task={tasks[task]}
                 onPress={this.onTaskButtonPress}
                 buttonColor={tasks[task].color}
+                onDelete={this.removeTask}
               />
             )
         )}
@@ -155,6 +168,7 @@ class HomeScreen extends Component {
             task={task}
             onPress={this.onTaskButtonPress}
             buttonColor={task.color}
+            onDelete={this.removeTask}
           />
         ));
       case taskLength === 4:
