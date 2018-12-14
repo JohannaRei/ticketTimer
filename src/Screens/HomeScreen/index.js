@@ -8,6 +8,7 @@ import { Navigation } from 'react-native-navigation';
 import i18n from '../../locales';
 import uuid from 'react-native-uuid';
 import { updateTasks, fetchCurrentTasks } from '../../services/Tasks';
+import { updateUser } from '../../services/User';
 
 class HomeScreen extends Component {
   constructor(props) {
@@ -34,6 +35,9 @@ class HomeScreen extends Component {
   }
 
   componentDidMount() {
+    updateUser({
+      name: 'Johanna'
+    });
     this.fetchTasks()
       .then(res => res > 0 && this.checkTaskDates())
       .catch(e => console.log(e));
@@ -168,8 +172,8 @@ class HomeScreen extends Component {
         lastLogged: new Date()
       }
     ];
-    this.setState({ tasks: newTasks });
     updateTasks(newTasks);
+    this.setState({ tasks: newTasks });
   };
 
   renderButtonRows = rows => {
