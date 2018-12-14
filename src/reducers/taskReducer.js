@@ -1,7 +1,7 @@
 import initialState from './initialState';
 import * as types from '../constants/actionTypes';
 
-const timeReducer = (state = initialState, action) => {
+const taskReducer = (state = initialState, action) => {
   switch (action.type) {
     case types.FETCH_CURRENT_TASKS_SUCCESS:
       return { ...state, currentTasks: action.currentTasks };
@@ -18,4 +18,4 @@ const timeReducer = (state = initialState, action) => {
   }
 };
 
-export default timeReducer;
+export default taskReducer;

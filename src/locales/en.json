@@ -5,9 +5,14 @@
     "task": {
       "edit": "Edit",
       "delete": "Delete",
+      "cancel": "Cancel",
       "time_today": "Time used today:",
       "time_total": "Time used in total:",
-      "deadline": "Deadline:"
+      "deadline": "Deadline:",
+      "delete_alert": {
+        "title": "Delete task",
+        "message": "Are you sure you want to delete this task?"
+      }
     }
   },
   "profile": {

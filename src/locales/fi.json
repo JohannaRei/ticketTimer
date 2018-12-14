@@ -5,9 +5,14 @@
     "task": {
       "edit": "Muokkaa",
       "delete": "Poista",
+      "cancel": "Peruuta",
       "time_today": "Aikaa käytetty tänään:",
       "time_total": "Aikaa käytetty yhteensä:",
-      "deadline": "Deadline:"
+      "deadline": "Deadline:",
+      "delete_alert": {
+        "title": "Poista tehtävä",
+        "message": "Oletko varma että tahdot poistaa tämän tehtävän?"
+      }
     }
   },
   "profile": {
