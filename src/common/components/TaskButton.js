@@ -6,7 +6,8 @@ class TaskButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showEditButtons: false
+      showEditButtons: false,
+      editTask: false
     };
   }
 
@@ -21,6 +22,16 @@ class TaskButton extends React.Component {
     });
 
     return `${times[0]}:${times[1]}:${times[2]}`;
+  };
+
+  editTask = (name, deadline) => {
+    console.log('edit task');
+    const newTask = { ...this.props.task };
+    newTask.name = 'Uusi task'; //name
+    if (deadline) {
+      newTask.deadline = deadline;
+    }
+    this.props.onEditTask(newTask);
   };
 
   render() {
@@ -42,10 +53,7 @@ class TaskButton extends React.Component {
         )}
         {showEditButtons && (
           <View style={styles.editButtons}>
-            <Button
-              title={i18n.t('home.task.edit')}
-              onPress={() => console.log('edit')}
-            />
+            <Button title={i18n.t('home.task.edit')} onPress={this.editTask} />
             <Button
               title={i18n.t('home.task.delete')}
               color="red"

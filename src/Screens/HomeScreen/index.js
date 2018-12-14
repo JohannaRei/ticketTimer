@@ -176,6 +176,18 @@ class HomeScreen extends Component {
     this.setState({ tasks: newTasks });
   };
 
+  editTask = editedTask => {
+    console.log(editedTask);
+    console.log('homescreenin edittask'); //tulee tänne asti
+    this.setState(state => {
+      const tasks = state.tasks.map(task => {
+        return task.id === editedTask.id ? editedTask : task;
+      });
+      updateTasks(tasks);
+      return { tasks };
+    });
+  };
+
   renderButtonRows = rows => {
     const buttonRows = [];
     for (let i = 0; i < rows * 2; i += 2) {
@@ -197,6 +209,7 @@ class HomeScreen extends Component {
                 onPress={this.onTaskButtonPress}
                 buttonColor={tasks[task].color}
                 onDelete={this.removeTask}
+                onEditTask={this.editTask}
               />
             )
         )}
@@ -216,6 +229,7 @@ class HomeScreen extends Component {
             onPress={this.onTaskButtonPress}
             buttonColor={task.color}
             onDelete={this.removeTask}
+            onEditTask={this.editTask}
           />
         ));
       case taskLength === 4:
