@@ -1,5 +1,12 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, Button, View } from 'react-native';
+import {
+  TouchableOpacity,
+  Text,
+  TextInput,
+  StyleSheet,
+  Button,
+  View
+} from 'react-native';
 import i18n from '../../locales';
 
 class TaskButton extends React.Component {
@@ -7,7 +14,8 @@ class TaskButton extends React.Component {
     super(props);
     this.state = {
       showEditButtons: false,
-      editTask: false
+      editTask: false,
+      taskName: this.props.task.name
     };
   }
 
@@ -25,9 +33,9 @@ class TaskButton extends React.Component {
   };
 
   editTask = (name, deadline) => {
-    console.log('edit task');
+    this.setState({ editTask: false });
     const newTask = { ...this.props.task };
-    newTask.name = 'Uusi task'; //name
+    newTask.name = name;
     if (deadline) {
       newTask.deadline = deadline;
     }
@@ -36,14 +44,22 @@ class TaskButton extends React.Component {
 
   render() {
     const { task, onPress } = this.props;
-    const { showEditButtons } = this.state;
+    const { showEditButtons, editTask, taskName } = this.state;
     return (
       <TouchableOpacity
         style={[styles.button, { backgroundColor: task.colour }]}
         onPress={() => onPress(task.id)}
         onLongPress={() => this.setState({ showEditButtons: !showEditButtons })}
       >
-        <Text style={styles.title}>{task.name}</Text>
+        {editTask ? (
+          <TextInput
+            onChangeText={text => this.setState({ taskName: text })}
+            value={taskName}
+            onSubmitEditing={() => this.editTask(this.state.taskName)}
+          />
+        ) : (
+          <Text style={styles.title}>{task.name}</Text>
+        )}
         <Text>{i18n.t('home.task.time_today')}</Text>
         <Text>{this.formatTime(task.timeToday)}</Text>
         <Text>{i18n.t('home.task.time_total')}</Text>
@@ -53,7 +69,10 @@ class TaskButton extends React.Component {
         )}
         {showEditButtons && (
           <View style={styles.editButtons}>
-            <Button title={i18n.t('home.task.edit')} onPress={this.editTask} />
+            <Button
+              title={i18n.t('home.task.edit')}
+              onPress={() => this.setState({ editTask: true })}
+            />
             <Button
               title={i18n.t('home.task.delete')}
               color="red"
