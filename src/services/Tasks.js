@@ -18,7 +18,14 @@ const fetchCurrentTasks = async () => {
   } catch (e) {
     console.log(e);
   }
-  return;
 };
 
-export { updateTasks, fetchCurrentTasks };
+const deleteAll = async () => {
+  try {
+    await AsyncStorage.clear();
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export { updateTasks, fetchCurrentTasks, deleteAll };

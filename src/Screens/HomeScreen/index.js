@@ -34,26 +34,29 @@ class HomeScreen extends Component {
   }
 
   componentDidMount() {
-    this.fetchTasks();
-    this.checkTaskDates();
+    this.fetchTasks()
+      .then(res => res > 0 && this.checkTaskDates())
+      .catch(e => console.log(e));
   }
 
   fetchTasks = async () => {
-    return await fetchCurrentTasks()
-      .then(res => {
-        const tasks = JSON.parse(res);
-        this.setState({ tasks });
-        return tasks;
-      })
-      .catch(e => console.log(e));
+    return await new Promise((resolve, reject) => {
+      fetchCurrentTasks()
+        .then(res => {
+          const tasks = JSON.parse(res);
+          this.setState({ tasks });
+          return resolve(tasks.length);
+        })
+        .catch(e => reject());
+    });
   };
 
   checkTaskDates = () => {
     const today = new Date();
+    console.log(today);
     this.setState(state => {
       const tasks = this.state.tasks.map(task => {
         const sameDay = this.checkDateEquality(task.lastLogged, today);
-        console.log(sameDay);
         return !sameDay
           ? {
               ...task,
@@ -67,9 +70,11 @@ class HomeScreen extends Component {
   };
 
   checkDateEquality = (date1, date2) => {
-    const sameYear = date1.getYear() === date2.getYear();
-    const sameMonth = date1.getMonth() === date2.getMonth();
-    const sameDay = date1.getDay() === date2.getDay();
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+    const sameYear = d1.getFullYear() === d2.getFullYear();
+    const sameMonth = d1.getMonth() === d2.getMonth();
+    const sameDay = d1.getDay() === d2.getDay();
     return sameYear && sameMonth && sameDay;
   };
 
@@ -84,18 +89,26 @@ class HomeScreen extends Component {
         },
         {
           text: i18n.t('home.task.delete'),
-          onPress: () =>
-            this.setState({
-              tasks: this.state.tasks.filter(task => task.id !== id)
-            }),
+          onPress: () => {
+            const tasks = this.state.tasks.filter(task => task.id !== id);
+            updateTasks(tasks);
+            this.setState({ tasks });
+          },
           style: 'destructive'
         }
       ]
     );
   };
 
+  unselectTask = id => {
+    clearInterval(this.timer);
+    updateTasks(this.state.tasks);
+    this.setState({ currentTask: null });
+  };
+
   onTaskButtonPress = id => {
     const { tasks, currentTask } = this.state;
+    this.unselectTask(id);
 
     if (!currentTask || currentTask.id !== id) {
       const selected = tasks.find(task => task.id === id);
@@ -115,10 +128,6 @@ class HomeScreen extends Component {
           return { tasks };
         });
       }, 1000);
-    } else {
-      clearInterval(this.timer);
-      updateTasks(this.state.tasks);
-      this.setState({ currentTask: null });
     }
   };
 
@@ -156,7 +165,7 @@ class HomeScreen extends Component {
         timeTotal: 0,
         colour: colours[tasks.length],
         deadline: task.deadline,
-        lastLogged: new Date('2018-11-11')
+        lastLogged: new Date()
       }
     ];
     this.setState({ tasks: newTasks });
