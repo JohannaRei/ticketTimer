@@ -42,6 +42,10 @@ class TaskButton extends React.Component {
     this.props.onEditTask(newTask);
   };
 
+  onFinishTask = () => {
+    console.log('task finished!');
+  };
+
   render() {
     const { task, onPress } = this.props;
     const { showEditButtons, editTask, taskName } = this.state;

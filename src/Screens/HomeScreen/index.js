@@ -16,7 +16,8 @@ class HomeScreen extends Component {
     this.state = {
       tasks: [],
       currentTask: null,
-      colours: randomColours()
+      colours: randomColours(),
+      lastTap: null
     };
     this.timer;
   }
@@ -108,6 +109,18 @@ class HomeScreen extends Component {
     clearInterval(this.timer);
     updateTasks(this.state.tasks);
     this.setState({ currentTask: null });
+  };
+
+  onDoubleTap = id => {
+    const { lastTap } = this.state;
+    const now = Date.now();
+    if (lastTap && now - lastTap < 300) {
+      // some checkmark animation to show it's finished
+      this.removeTask(id); // should be finish task but same difference for now
+    } else {
+      this.setState({ lastTap: now });
+      this.onTaskButtonPress(id);
+    }
   };
 
   onTaskButtonPress = id => {
@@ -206,7 +219,7 @@ class HomeScreen extends Component {
               <TaskButton
                 key={tasks[task].id}
                 task={tasks[task]}
-                onPress={this.onTaskButtonPress}
+                onPress={this.onDoubleTap}
                 buttonColor={tasks[task].color}
                 onDelete={this.removeTask}
                 onEditTask={this.editTask}
@@ -226,7 +239,7 @@ class HomeScreen extends Component {
           <TaskButton
             key={task.id}
             task={task}
-            onPress={this.onTaskButtonPress}
+            onPress={this.onDoubleTap}
             buttonColor={task.color}
             onDelete={this.removeTask}
             onEditTask={this.editTask}
