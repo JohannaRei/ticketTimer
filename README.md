@@ -7,8 +7,8 @@ Created as a practice project but also because I'm terrible at time tracking.
 
 ## todos
 
-Redux: because AsyncStorage is too easy
-Firebase: because what if I wanna use more than one device
+Redux: because AsyncStorage is too easy  
+Firebase: because what if I wanna use more than one device  
 Victory: because graphs are great
 
 And better styling.
