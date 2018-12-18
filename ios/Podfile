@@ -11,4 +11,6 @@ target 'ticketTimer' do
   pod 'Firebase/Core'
   pod 'RNLanguages', :path => '../node_modules/react-native-languages'
 
+  pod 'RNSVG', :path => '../node_modules/react-native-svg'
+
 end

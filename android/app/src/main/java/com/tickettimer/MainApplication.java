@@ -3,6 +3,7 @@ package com.ticketTimer;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.horcrux.svg.SvgPackage;
 import com.reactcommunity.rnlanguages.RNLanguagesPackage;
 import io.invertase.firebase.RNFirebasePackage;
 import com.facebook.react.ReactNativeHost;
@@ -39,6 +40,10 @@ public class MainApplication extends NavigationApplication {
     // No need to add RnnPackage and MainReactPackage
     return Arrays.<ReactPackage>asList(
       // eg. new VectorIconsPackage()
+      new RNLanguagesPackage(),
+      new SvgPackage(),
+      new RNFirebasePackage()
+
     );
   }
 

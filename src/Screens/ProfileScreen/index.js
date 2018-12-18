@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, Dimensions } from 'react-native';
 import styles from './styles';
 import { getUser, setUser } from '../../services/User';
+import { VictoryArea, VictoryStack } from 'victory-native';
+
+const screenWidth = Dimensions.get('screen').width;
 
 class ProfileScreen extends Component {
   constructor(props) {
@@ -38,10 +41,21 @@ class ProfileScreen extends Component {
   };
 
   render() {
+    console.log(screenWidth);
     const { user } = this.state;
     return (
       <View style={styles.container}>
         <Text>{user.name}</Text>
+        <VictoryStack padding={0}>
+          <VictoryArea
+            style={{ data: { fill: '#51c0db' } }}
+            data={[{ x: 1, y: 3 }, { x: 2, y: 3 }, { x: 3, y: 2 }]}
+          />
+          <VictoryArea
+            style={{ data: { fill: '#a3d96a' } }}
+            data={[{ x: 1, y: 0 }, { x: 2, y: 6 }, { x: 3, y: 12 }]}
+          />
+        </VictoryStack>
       </View>
     );
   }
