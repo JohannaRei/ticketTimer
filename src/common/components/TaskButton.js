@@ -53,6 +53,7 @@ class TaskButton extends React.Component {
       >
         {editTask ? (
           <TextInput
+            style={styles.input}
             onChangeText={text => this.setState({ taskName: text })}
             value={taskName}
             onSubmitEditing={() => this.editTask(this.state.taskName)}
@@ -99,6 +100,9 @@ const styles = StyleSheet.create({
   editButtons: {
     padding: 20,
     flexDirection: 'row'
+  },
+  input: {
+    backgroundColor: '#fff'
   }
 });
 
